@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import '../Home/specific_offer.dart';
 import '../connect.dart';
 
 class offerpool extends StatefulWidget {
@@ -13,7 +14,8 @@ class offerpool extends StatefulWidget {
     required this.vehicle_no,
     required this.time,
     required this.date,
-    required this.status, required this.pool_id,
+    required this.status,
+    required this.pool_id,
   }) : super(key: key);
 
   final String starting_point;
@@ -46,6 +48,14 @@ class _offerpoolState extends State<offerpool> {
       isCompleted = true;
     });
     updateStatus();
+
+    // Navigate to the Specific_offer page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Offer_view(),
+      ),
+    );
   }
 
   Future<void> updateStatus() async {
@@ -57,7 +67,6 @@ class _offerpoolState extends State<offerpool> {
     var response = await http.post(
       Uri.parse("${con.url}offer_pool/updatestatus.php"),
       body: data,
-      // headers: {'Content-Type': 'application/json'},
     );
 
     print(response.statusCode);
