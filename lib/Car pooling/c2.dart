@@ -15,7 +15,8 @@ class c2 extends StatefulWidget {
 class _c2State extends State<c2> {
   var flag = 0;
   late String result;
-  Future<dynamic> getdata() async {
+
+  Future<List<dynamic>> getdata() async {
     var response = await post(Uri.parse("${con.url}offer_pool/view_pool.php"));
     print(response.statusCode);
     print(response.body);
@@ -26,20 +27,16 @@ class _c2State extends State<c2> {
       return jsonDecode(response.body);
     } else {
       flag = 0;
-      const CircularProgressIndicator();
-      Text('no data');
+      return []; // Return an empty list to handle no data case
     }
   }
 
-  Future<dynamic> search(var result) async {
-    // var log_id=await getLoginId();
+  Future<List<dynamic>> search(String result) async {
     print(result);
     var data = {'destination': result};
-    // var data={'log_id':'1'};
-
     print("destination=$result");
     var response =
-        await post(Uri.parse("${con.url}offer_pool/search.php"), body: data);
+    await post(Uri.parse("${con.url}offer_pool/search.php"), body: data);
     print(response.statusCode);
     print(response.body);
     if (response.statusCode == 200 &&
@@ -48,8 +45,7 @@ class _c2State extends State<c2> {
       return jsonDecode(response.body);
     } else {
       flag = 0;
-      const CircularProgressIndicator();
-      Text('no data');
+      return []; // Return an empty list to handle no data case
     }
   }
 
@@ -63,24 +59,23 @@ class _c2State extends State<c2> {
               Row(
                 children: [
                   IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.arrow_back_ios_new)),
-
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    icon: Icon(Icons.arrow_back_ios_new),
+                  ),
                   Padding(
                     padding: const EdgeInsets.only(left: 8.0),
                     child: Text(
                       'GO Share',
                       style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                          color: Color(0xff068DA9),
-                          fontFamily: 'Times New Roman'),
+                        fontSize: 20,
+                        fontWeight: FontWeight.w500,
+                        color: Color(0xff068DA9),
+                        fontFamily: 'Times New Roman',
+                      ),
                     ),
                   ),
-
-                  //app name
                 ],
               ),
               Padding(
@@ -94,179 +89,84 @@ class _c2State extends State<c2> {
                     search(result);
                   },
                   style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20),
+                    color: Colors.white,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 20,
+                  ),
                   decoration: InputDecoration(
-                      hintText: 'Destination',
-                      hintStyle: TextStyle(color: Colors.white),
-                      filled: true,
-                      fillColor: Color(0xff068DA9),
-                      prefixIcon: Icon(
-                        Icons.search_rounded,
-                        color: Colors.white,
-                      ),
-                      enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20)),
-                      focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide.none,
-                          borderRadius: BorderRadius.circular(20))),
+                    hintText: 'Car/Bike Pooling',
+                    hintStyle: TextStyle(color: Colors.white),
+                    filled: true,
+                    fillColor: Color(0xff068DA9),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide.none,
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
               Container(
                 height: 500,
                 child: FutureBuilder(
-                    future: getdata(),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        print(snapshot.error);
-                      }
-                      return flag == 0
-                          ? Center(
-                              child: CircularProgressIndicator(
-                              backgroundColor: Colors.teal,
-                              color: Colors.red,
-                            ))
-                          : ListView.builder(
-                              itemCount: snapshot.data.length,
-                              itemBuilder: (context, index) {
-                                return InkWell(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) => offerpool(
-                                                starting_point:
-                                                    snapshot.data[index]
-                                                        ['starting_point'],
-                                                destination: snapshot
-                                                    .data[index]['destination'],
-                                                vehicle_no: snapshot.data[index]
-                                                    ['vehicle_no'],
-                                                time: snapshot.data[index]
-                                                    ['time'],
-                                                date: snapshot.data[index]
-                                                    ['date'])));
-                                  },
-                                  child: ListTile(
-                                    title: Text(
-                                        '${snapshot.data[index]['destination']}'),
-                                    subtitle: Text(
-                                        '${snapshot.data[index]['starting_point']}'),
-                                    trailing: Column(
-                                      children: [
-                                        Text('${snapshot.data[index]['time']}'),
-                                        Text('${snapshot.data[index]['date']}'),
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              });
-                    }),
-              )
+                  future: getdata(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                    }
+                    return flag == 0
+                        ? Center(
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.teal,
+                        color: Colors.red,
+                      ),
+                    )
+                        : ListView.builder(
+                      itemCount: snapshot.data?.length ?? 0, // Add null check
+                      itemBuilder: (context, index) {
+                        var data = snapshot.data?[index];
+                        if (data == null) return SizedBox.shrink(); // Add null check
+                        return InkWell(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => offerpool(
+                                  starting_point: data['starting_point'],
+                                  destination: data['destination'],
+                                  vehicle_no: data['vehicle_no'],
+                                  time: data['time'],
+                                  date: data['date'],
+                                  status: data['status'] ?? 'N/A',
+                                  pool_id:data['pool_id'], // Add null check for status
+                                ),
+                              ),
+                            );
+                          },
+                          child: ListTile(
+                            title: Text('${data['destination']}'),
+                            subtitle: Text('${data['starting_point']}'),
+                            trailing: Column(
+                              children: [
+                                Text('${data['time']}'),
+                                Text('${data['date']}'),
+                                Text('${data['status'] ?? 'N/A'}'), // Display 'N/A' if status is not available
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         ),
       ),
     );
-  }
-}
-
-class SearchableList extends StatefulWidget {
-  const SearchableList({Key? key, required this.dataList}) : super(key: key);
-  final List dataList;
-  @override
-  State<SearchableList> createState() => _SearchableListState();
-}
-
-class _SearchableListState extends State<SearchableList> {
-  @override
-  void initState() {
-    datas = widget.dataList;
-    super.initState();
-  }
-
-  List datas = [];
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        TextField(
-          onChanged: (value) {
-            if (value.isEmpty) {
-              setState(() {
-                datas = widget.dataList;
-              });
-            } else {
-              datas = [];
-              for (var singleItem in widget.dataList) {
-                if (singleItem['destination']
-                    .toString()
-                    .toLowerCase()
-                    .contains(value.toLowerCase())) {
-                  setState(() {
-                    datas.add(singleItem);
-                  });
-                }
-              }
-            }
-          },
-          decoration: const InputDecoration(
-            hintText: "Search Destination",
-            prefixIcon: Icon(Icons.search),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(7.0)),
-            ),
-          ),
-        ),
-        Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: datas.length,
-              itemBuilder: (context, index) {
-                var jobData = datas[index];
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8.0),
-                  padding: const EdgeInsets.all(12.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          update(id: 'pool_id');
-                          Fluttertoast.showToast(msg: "Applied for pool");
-                          // Navigator.push(context, MaterialPageRoute(builder: (context)=>const ()));
-                        },
-                        style: ButtonStyle(
-                          backgroundColor:
-                              MaterialStateProperty.all<Color>(Colors.black12),
-                        ),
-                        child: const Text("Apply for pool"),
-                      ),
-                    ],
-                  ),
-                );
-              }),
-        ),
-      ],
-    );
-  }
-
-  void update({required String id}) {
-    var data = {"id": id};
-    var response = post(Uri.parse('${con.url}offer_pool.php'), body: data);
   }
 }

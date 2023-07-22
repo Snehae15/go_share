@@ -98,34 +98,33 @@ class _c4editState extends State<c4edit> {
 
   final offer_poolkey=GlobalKey<FormState>();
 
-  Future<void> senddata()  async {
-    var log_id=await getLoginId();
-    if (log_id!=null) {
-      print("log_id:$log_id");
-    }
-    else
-    {
+  Future<void> senddata() async {
+    var log_id = await getLoginId();
+    if (log_id != null) {
+      print("log_id: $log_id");
+    } else {
       print('error');
-
+      return; // Exit the function if log_id is null
     }
-    var data={
-      'starting_point':starting_pointctrl.text,
-      'destination':destinationctrl.text,
-      'vehicle_no':vehicle_noctrl.text,
-      'date':datectrl.text,
-      'time':timectrl.text,
-      'log_id':log_id,
-      'pool_id':widget.pool_id
+
+    var data = {
+      'pool_id': widget.pool_id,
+      'starting_point': starting_pointctrl.text,
+      'destination': destinationctrl.text,
+      'vehicle_no': vehicle_noctrl.text,
+      'date': datectrl.text,
+      'time': timectrl.text,
+      'log_id': log_id,
     };
-    var response=await post(Uri.parse("${con.url}offer_ride_menu/update.php"),body: data);
+
+    var response = await post(Uri.parse("${con.url}offer_ride_menu/update.php"), body: data);
     print(response.body);
-    if (response.statusCode==200) {
-
+    if (response.statusCode == 200) {
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Updated')));
-      Navigator.pushAndRemoveUntil(context,MaterialPageRoute(builder: (context)=>c4()),(Route <dynamic> route )=>false);
+      Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => c4()), (Route<dynamic> route) => false);
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return  Scaffold(

@@ -50,9 +50,6 @@ class _h4State extends State<h4> {
     return null;
   }
 
-
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,51 +110,6 @@ class _h4State extends State<h4> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                // CircleAvatar(
-                                //   backgroundImage: data['dp'] != null
-                                //       ? NetworkImage('${con.url}login/image/${data['dp']}')
-                                //       : AssetImage('assets/placeholder_image.png'),
-                                //   radius: 90,
-                                // ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      '${data['email']} '.toLowerCase(),
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xff068DA9),
-                                      ),
-                                    ),
-                                    IconButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) => h4edit(
-                                              first_name: data['first_name'],
-                                              last_name: data['last_name'],
-                                              username: data['username'],
-                                              email: data['email'],
-                                              dp: data['dp'],
-                                              register_id: data['register_id'],
-                                            ),
-                                          ),
-                                        );
-                                      },
-                                      icon: Icon(Icons.edit, size: 25, color: Color(0xff068DA9)),
-                                    ),
-                                  ],
-                                ),
-                                SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    // Add your action buttons here if needed
-                                  ],
-                                ),
                                 Container(
                                   width: MediaQuery.of(context).size.width,
                                   height: 250,
@@ -167,9 +119,9 @@ class _h4State extends State<h4> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('First name:'.toLowerCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
+                                          Text('First Name'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                           Text(':'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
-                                          Text('${data['first_name']} '.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Color(0xff068DA9),),),
+                                          Text('${data['first_name']}'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Color(0xff068DA9),),),
                                           SizedBox(width: 10,),
                                         ],
                                       ),
@@ -178,7 +130,7 @@ class _h4State extends State<h4> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('Last Name:'.toLowerCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
+                                          Text('Last Name'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                           Text(':'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                           Text('${data['last_name']}'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Color(0xff068DA9),),),
                                           SizedBox(width: 10,),
@@ -189,7 +141,7 @@ class _h4State extends State<h4> {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text('Mobile_no'.toLowerCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
+                                          Text('Mobile No'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                           Text(':'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                           Text('${data['mobile_no']}'.toUpperCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Color(0xff068DA9),),),
                                           SizedBox(width: 10,),
@@ -201,8 +153,8 @@ class _h4State extends State<h4> {
                                         child: Row(
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
-                                            Text('Email:'.toLowerCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
-                                            Text(':'.toLowerCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
+                                            Text('Email'.toUpperCase(), style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
+                                            Text(':', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.black),),
                                             Text('${data['email']}'.toLowerCase(), style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400, color: Color(0xff068DA9),),),
                                             SizedBox(width: 10,),
                                           ],

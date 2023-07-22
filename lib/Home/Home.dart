@@ -1,5 +1,6 @@
 import 'package:corider/Home/h1.dart';
 import 'package:corider/Home/h2.dart';
+import 'package:corider/Home/offer.dart';
 import 'package:corider/Login/login.dart';
 import 'package:corider/Login/register.dart';
 import 'package:flutter/material.dart';
@@ -17,7 +18,7 @@ class _homeState extends State<home> {
   List travel=[
     h1(),
     h2(),
-    register(),
+    AllOffer(),
     h4(),
 
   ];
@@ -40,7 +41,7 @@ class _homeState extends State<home> {
         items: [
           BottomNavigationBarItem(icon: Icon(Icons.home,size: 32,),label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.search_rounded,size: 32),label: 'Search'),
-          BottomNavigationBarItem(icon: Icon(Icons.messenger_outline,size: 32),label: 'Messages'),
+          BottomNavigationBarItem(icon: Icon(Icons.local_offer_outlined,size: 32),label: 'Offers'),
           BottomNavigationBarItem(icon: Icon(Icons.person_sharp,size: 32),label: 'Profile'),
 
 

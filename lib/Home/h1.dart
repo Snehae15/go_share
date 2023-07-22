@@ -6,6 +6,7 @@ import 'package:corider/Group%20trip/gt1.dart';
 import 'package:corider/Group%20trip/gt4.dart';
 import 'package:corider/Home/h4.dart';
 import 'package:corider/Login/login.dart';
+import 'package:corider/Police%20module/police_home.dart';
 import 'package:corider/Rental%20cars/r1.dart';
 import 'package:corider/menu/help.dart';
 import 'package:corider/menu/histroy.dart';
@@ -20,6 +21,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../Car pooling/current_location.dart';
 import '../menu/complaints.dart';
 import '../connect.dart';
+import 'grouptripview.dart';
 import 'help.dart';
 // import 'package:corider/Login/login.dart';
 
@@ -46,7 +48,7 @@ class _h1State extends State<h1> {
   Future<dynamic> getdata() async {
     var log_id=await getLoginId();
     print(log_id);
-    var data={'log_id':log_id.toString()};
+    var data={'log_id':log_id};
     // var data={'log_id':'1'};
 
     print("log_id1=$log_id");
@@ -81,9 +83,6 @@ class _h1State extends State<h1> {
       appBar: AppBar(
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
-        // leading: IconButton(onPressed: (){
-        //   Navigator.pop(context);
-        // }, icon: Icon(Icons.arrow_back_ios_new,color: Colors.black,)),
         actions: [
           Row(
             children: [
@@ -95,14 +94,12 @@ class _h1State extends State<h1> {
                     color: Color(0xff068DA9),
                     fontFamily: 'Times New Roman'
                 ),),
-
               ),
               IconButton(onPressed: () {},
                   icon: Icon(
                     Icons.notifications_outlined, color: Colors.amber,size: 40,)),
               // IconButton(onPressed: (){
               // }, icon: Icon(Icons.menu,color: Colors.black,)),
-
             ],
           ), //app name
         ],
@@ -118,61 +115,47 @@ class _h1State extends State<h1> {
                 children: [
                   IconButton(onPressed: (){  Navigator.push(context,MaterialPageRoute(builder: (context) => help()));
                   }, icon: Icon(Icons.help_outline)),
-
                   IconButton(onPressed: (){
                     showDialog(context: context, builder: (context) {
                       return AlertDialog(
                         title: Text('Are you sure you want to logout!'),
                         actions: [
                           TextButton(onPressed: () {
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: (context) => h1()));
                             Navigator.pop(context);
                           }, child: Text('No')),
                           TextButton(onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) => login()));
                           }, child: Text('Yes')),
-
                         ],
                       );
                     });
                   }, icon: Icon(Icons.logout)),
-
                 ],
               ),
-
               DrawerHeader(
-                  child: FutureBuilder(
-                      future: getdata(),
-                          builder: (context, snapshot) {
-                            if (snapshot.hasError) {
-                              print(snapshot.error);
-                            }
-                            return flag == 0 ?
-                            Center(child: CircularProgressIndicator()) :
-                            Container(
-                              height:137,
-                                child: ListView.builder(
-                                    itemCount: 1,
-                                    // shrinkWrap: true,
-                                    // physics: BouncingScrollPhysics(),
-                                    itemBuilder: (BuildContext context,
-                                        int index) {
-                                      return Column(
-                                        children: [
-                                          CircleAvatar(
-                                            backgroundImage: NetworkImage(
-                                                '${con.url}login/image/${snapshot.data['dp']}'),
-                                            radius: 50,
-                                          ),
-                                          Text('${snapshot.data['email']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
-                                        ],
-                                      );
-                                    }));
-                          })
+                child: FutureBuilder(
+                    future: getdata(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                      }
+                      return flag == 0 ?
+                      Center(child: CircularProgressIndicator()) :
+                      Container(
+                          height:137,
+                          child: ListView.builder(
+                              itemCount: 1,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  children: [
+                                    // CircleAvatar(),
+                                    // Text('${snapshot.data['email']}', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),)
+                                  ],
+                                );
+                              }));
+                    }),
               ),
-
               InkWell(
                 onTap: () {
                   Navigator.push(context,
@@ -181,7 +164,6 @@ class _h1State extends State<h1> {
                 child: ListTile(
                   leading: Icon(Icons.mode_of_travel),
                   title: Text('My Rides'),
-
                 ),
               ),
               Divider(
@@ -195,7 +177,6 @@ class _h1State extends State<h1> {
                 child: ListTile(
                   leading: Icon(Icons.history),
                   title: Text('History'),
-
                 ),
               ),
               Divider(
@@ -208,8 +189,19 @@ class _h1State extends State<h1> {
                 },
                 child: ListTile(
                   leading: Icon(Icons.comment),
-                  title: Text('Complaints'),
-
+                  title: Text('Add Complaints'),
+                ),
+              ), Divider(
+                thickness: 2,
+              ),
+              InkWell(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => police_home()));
+                },
+                child: ListTile(
+                  leading: Icon(Icons.comment),
+                  title: Text('View Complaints'),
                 ),
               ),
               Divider(
@@ -223,7 +215,6 @@ class _h1State extends State<h1> {
                 child: ListTile(
                   leading: Icon(Icons.reviews_outlined),
                   title: Text('Review'),
-
                 ),
               ),
               Divider(
@@ -232,12 +223,11 @@ class _h1State extends State<h1> {
               InkWell(
                 onTap: () {
                   Navigator.push(
-                      context, MaterialPageRoute(builder: (context) => gt4()));
+                      context, MaterialPageRoute(builder: (context) => GrouptripView()));
                 },
                 child: ListTile(
                   leading: Icon(Icons.group),
                   title: Text('Group created'),
-
                 ),
               ),
               Divider(
@@ -251,52 +241,8 @@ class _h1State extends State<h1> {
                 child: ListTile(
                   leading: Icon(Icons.local_offer_outlined),
                   title: Text('Offer ride'),
-
                 ),
               ),
-              // Divider(
-              //   thickness: 2,
-              // ),
-              // InkWell(
-              //   onTap: () {
-              //     Navigator.push(
-              //         context, MaterialPageRoute(builder: (context) => help()));
-              //   },
-              //   child: ListTile(
-              //     leading: Icon(Icons.help_outline),
-              //     title: Text('Help'),
-              //
-              //   ),
-              // ),
-              // Divider(
-              //   thickness: 2,
-              // ),
-              // InkWell(
-              //   onTap: () {
-              //     showDialog(context: context, builder: (context) {
-              //       return AlertDialog(
-              //         title: Text('Are you sure you want to logout!'),
-              //         actions: [
-              //           TextButton(onPressed: () {
-              //             Navigator.push(context,
-              //                 MaterialPageRoute(builder: (context) => h1()));
-              //           }, child: Text('No')),
-              //           TextButton(onPressed: () {
-              //             Navigator.push(context,
-              //                 MaterialPageRoute(builder: (context) => login()));
-              //           }, child: Text('Yes')),
-              //
-              //         ],
-              //       );
-              //     });
-              //   },
-              //   child: ListTile(
-              //     leading: Icon(Icons.logout),
-              //     title: Text('logout'),
-              //
-              //   ),
-              // ),
-
               Align(
                 alignment: Alignment.bottomCenter,
                 child: Padding(
@@ -305,14 +251,12 @@ class _h1State extends State<h1> {
                     fontSize: 35,
                     fontWeight: FontWeight.bold,
                     color: Color(0xff068DA9),
-                    // fontFamily: 'Times New Roman'
                   ),),
                 ),
               ),
             ],
           ),
         ),
-
       ),
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.white,
@@ -320,7 +264,9 @@ class _h1State extends State<h1> {
         splashColor: Colors.white,
         onPressed: () {
           Navigator.push(context, MaterialPageRoute(builder: (context)=>alert()));
-        }, child:Icon(Icons.add_alert_outlined,size: 30,) ,),
+        },
+        child: Icon(Icons.add_alert_outlined, size: 30,),
+      ),
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -344,21 +290,22 @@ class _h1State extends State<h1> {
               child: Container(
                 height: 60,
                 decoration: BoxDecoration(
-                  // color: Colors.black,
-                  borderRadius: BorderRadius.circular(15)
+                  borderRadius: BorderRadius.circular(15),
+                  border: Border.all(color: Color(0xff068DA9)),
                 ),
                 width: double.infinity,
                 child: OutlinedButton(
                   style: ButtonStyle(
                       side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
-                    onPressed: () {
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=>c1()));
-                      // Navigator.push(context, MaterialPageRoute(builder: (
-                      //     context) => c1(lat: 10.976036, long: 76.225441,)));
-                    }, child: Text(
-                  'Car/Bike Pooling',
-                  style: TextStyle(color: Color(0xff068DA9), fontSize: 22),)),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=>c1()));
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) => c1(lat: 10.976036, long: 76.225441,)));
+                  },
+                  child: Text(
+                    'Car/Bike Pooling',
+                    style: TextStyle(color: Color(0xff068DA9), fontSize: 22),
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -367,14 +314,16 @@ class _h1State extends State<h1> {
                 height: 60,
                 width: double.infinity,
                 child: OutlinedButton(
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (
-                          context) => gm1()));
-                    }, child: Text(
-                  'Goods Movement',
-                  style: TextStyle(color:  Color(0xff068DA9), fontSize: 22),)),
+                  style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => gm1()));
+                  },
+                  child: Text(
+                    'Goods Movement',
+                    style: TextStyle(color:  Color(0xff068DA9), fontSize: 22),
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -383,13 +332,16 @@ class _h1State extends State<h1> {
                 height: 60,
                 width: double.infinity,
                 child: OutlinedButton(
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => r1()));
-                    }, child: Text(
-                  'Rental Service', style: TextStyle(color: Color(0xff068DA9), fontSize: 22),)),
+                  style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => r1()));
+                  },
+                  child: Text(
+                    'Rental Service',
+                    style: TextStyle(color: Color(0xff068DA9), fontSize: 22),
+                  ),
+                ),
               ),
             ),
             Padding(
@@ -398,18 +350,21 @@ class _h1State extends State<h1> {
                 height: 60,
                 width: double.infinity,
                 child: OutlinedButton(
-                    style: ButtonStyle(
-                        side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
-                    onPressed: () {
-                      Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => gt1()));
-                    }, child: Text(
-                  'Group Trip', style: TextStyle(color:  Color(0xff068DA9),
-                    fontSize: 22),)),
+                  style: ButtonStyle(
+                      side: MaterialStateProperty.all(BorderSide(color: Color(0xff068DA9)))),
+                  onPressed: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => gt1()));
+                  },
+                  child: Text(
+                    'Group Trip',
+                    style: TextStyle(color:  Color(0xff068DA9), fontSize: 22),
+                  ),
+                ),
               ),
             )
           ],
         ),
       ),
-    );  }
+    );
+  }
 }
